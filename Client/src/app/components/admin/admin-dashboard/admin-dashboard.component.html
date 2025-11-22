@@ -1,0 +1,468 @@
+<div class="container-fluid">
+  <div class="row">
+    <!-- Sidebar -->
+    <div class="col-md-2 admin-sidebar p-3">
+      <h4 class="text-white mb-4">{{Dictionary.ADMIN_PANEL}}</h4>
+      <ul class="nav flex-column">
+        <li class="nav-item">
+          <a class="nav-link" [class.active]="activeTab === 'branches'" (click)="activeTab = 'branches'">
+            <i class="fas fa-building"></i> {{Dictionary.ADMIN_BRANCHES}}
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" [class.active]="activeTab === 'pastors'" (click)="activeTab = 'pastors'">
+            <i class="fas fa-users"></i> {{Dictionary.ADMIN_PASTORS}}
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" [class.active]="activeTab === 'events'" (click)="activeTab = 'events'">
+            <i class="fas fa-calendar-alt"></i> {{Dictionary.ADMIN_EVENTS}}
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" [class.active]="activeTab === 'churchinfo'" (click)="activeTab = 'churchinfo'">
+            <i class="fas fa-info-circle"></i> {{Dictionary.ADMIN_CHURCH_INFO}}
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" [class.active]="activeTab === 'highlights'" (click)="activeTab = 'highlights'">
+            <i class="fas fa-images"></i> {{Dictionary.ADMIN_HIGHLIGHTS}}
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" [class.active]="activeTab === 'testimonies'" (click)="activeTab = 'testimonies'">
+            <i class="fas fa-comments"></i> {{Dictionary.ADMIN_TESTIMONIES}}
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Main Content -->
+    <div class="col-md-10 p-4">
+      <!-- Branches Tab -->
+      <div *ngIf="activeTab === 'branches'">
+        <h2>{{Dictionary.ADMIN_MANAGE_BRANCHES}}</h2>
+        
+        <div class="card mb-4">
+          <div class="card-header">
+            <h5>{{editingBranch ? Dictionary.ADMIN_EDIT_BRANCH : Dictionary.ADMIN_ADD_BRANCH}}</h5>
+          </div>
+          <div class="card-body">
+            <form (ngSubmit)="saveBranch()">
+              <div class="row">
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">{{Dictionary.ADMIN_BRANCH_NAME}}</label>
+                  <input type="text" class="form-control" [(ngModel)]="branchForm.name" name="name" required>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">{{Dictionary.ADMIN_CITY}}</label>
+                  <input type="text" class="form-control" [(ngModel)]="branchForm.city" name="city" required>
+                </div>
+                <div class="col-md-12 mb-3">
+                  <label class="form-label">{{Dictionary.ADMIN_ADDRESS}}</label>
+                  <input type="text" class="form-control" [(ngModel)]="branchForm.address" name="address" required>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">{{Dictionary.ADMIN_PROVINCE}}</label>
+                  <input type="text" class="form-control" [(ngModel)]="branchForm.province" name="province">
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">{{Dictionary.ADMIN_PHONE}}</label>
+                  <input type="text" class="form-control" [(ngModel)]="branchForm.phoneNumber" name="phoneNumber">
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">{{Dictionary.ADMIN_EMAIL}}</label>
+                  <input type="email" class="form-control" [(ngModel)]="branchForm.email" name="email">
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">{{Dictionary.ADMIN_ESTABLISHED_DATE}}</label>
+                  <input type="date" class="form-control" [(ngModel)]="branchForm.establishedDate" name="establishedDate">
+                </div>
+              </div>
+              <button type="submit" class="btn btn-primary">
+                {{editingBranch ? Dictionary.ADMIN_UPDATE : Dictionary.ADMIN_CREATE}}
+              </button>
+              <button type="button" class="btn btn-secondary ms-2" *ngIf="editingBranch" (click)="cancelBranchEdit()">
+                {{Dictionary.ADMIN_CANCEL}}
+              </button>
+            </form>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <h5>{{Dictionary.ADMIN_EXISTING_BRANCHES}}</h5>
+          </div>
+          <div class="card-body">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>{{Dictionary.ADMIN_NAME}}</th>
+                  <th>{{Dictionary.ADMIN_CITY}}</th>
+                  <th>{{Dictionary.ADMIN_ADDRESS}}</th>
+                  <th>{{Dictionary.ADMIN_CONTACT}}</th>
+                  <th>{{Dictionary.ADMIN_ACTIONS}}</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let branch of branches">
+                  <td>{{branch.name}}</td>
+                  <td>{{branch.city}}</td>
+                  <td>{{branch.address}}</td>
+                  <td>
+                    <div>{{branch.phoneNumber}}</div>
+                    <div><small>{{branch.email}}</small></div>
+                  </td>
+                  <td>
+                    <button class="btn btn-sm btn-warning me-2" (click)="editBranch(branch)">{{Dictionary.ADMIN_EDIT}}</button>
+                    <button class="btn btn-sm btn-danger" (click)="deleteBranch(branch.id)">{{Dictionary.ADMIN_DELETE}}</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Pastors Tab -->
+      <div *ngIf="activeTab === 'pastors'">
+        <h2>{{Dictionary.ADMIN_MANAGE_PASTORS}}</h2>
+        
+        <div class="card mb-4">
+          <div class="card-header">
+            <h5>{{editingPastor ? Dictionary.ADMIN_EDIT_PASTOR : Dictionary.ADMIN_ADD_PASTOR}}</h5>
+          </div>
+          <div class="card-body">
+            <form (ngSubmit)="savePastor()">
+              <div class="row">
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">{{Dictionary.ADMIN_FIRST_NAME}}</label>
+                  <input type="text" class="form-control" [(ngModel)]="pastorForm.firstName" name="firstName" required>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">{{Dictionary.ADMIN_LAST_NAME}}</label>
+                  <input type="text" class="form-control" [(ngModel)]="pastorForm.lastName" name="lastName" required>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">{{Dictionary.ADMIN_TITLE}}</label>
+                  <input type="text" class="form-control" [(ngModel)]="pastorForm.title" name="title" placeholder="e.g., Senior Pastor">
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">{{Dictionary.ADMIN_BRANCH}}</label>
+                  <select class="form-select" [(ngModel)]="pastorForm.branchId" name="branchId" required>
+                    <option [value]="null">{{Dictionary.ADMIN_SELECT_BRANCH}}</option>
+                    <option *ngFor="let branch of branches" [value]="branch.id">{{branch.name}}</option>
+                  </select>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">{{Dictionary.ADMIN_EMAIL}}</label>
+                  <input type="email" class="form-control" [(ngModel)]="pastorForm.email" name="email">
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">{{Dictionary.ADMIN_PHONE}}</label>
+                  <input type="text" class="form-control" [(ngModel)]="pastorForm.phoneNumber" name="phoneNumber">
+                </div>
+                <div class="col-md-12 mb-3">
+                  <label class="form-label">{{Dictionary.ADMIN_BIOGRAPHY}}</label>
+                  <textarea class="form-control" [(ngModel)]="pastorForm.bio" name="bio" rows="3"></textarea>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">{{Dictionary.ADMIN_PHOTO_URL}}</label>
+                  <input type="text" class="form-control" [(ngModel)]="pastorForm.photoUrl" name="photoUrl">
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">{{Dictionary.ADMIN_ORDAINED_DATE}}</label>
+                  <input type="date" class="form-control" [(ngModel)]="pastorForm.ordainedDate" name="ordainedDate">
+                </div>
+              </div>
+              <button type="submit" class="btn btn-primary">
+                {{editingPastor ? Dictionary.ADMIN_UPDATE : Dictionary.ADMIN_CREATE}}
+              </button>
+              <button type="button" class="btn btn-secondary ms-2" *ngIf="editingPastor" (click)="cancelPastorEdit()">
+                {{Dictionary.ADMIN_CANCEL}}
+              </button>
+            </form>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <h5>{{Dictionary.ADMIN_EXISTING_PASTORS}}</h5>
+          </div>
+          <div class="card-body">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>{{Dictionary.ADMIN_NAME}}</th>
+                  <th>{{Dictionary.ADMIN_TITLE}}</th>
+                  <th>{{Dictionary.ADMIN_BRANCH}}</th>
+                  <th>{{Dictionary.ADMIN_CONTACT}}</th>
+                  <th>{{Dictionary.ADMIN_ACTIONS}}</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let pastor of pastors">
+                  <td>{{pastor.firstName}} {{pastor.lastName}}</td>
+                  <td>{{pastor.title}}</td>
+                  <td>{{pastor.branch?.name}}</td>
+                  <td>
+                    <div>{{pastor.phoneNumber}}</div>
+                    <div><small>{{pastor.email}}</small></div>
+                  </td>
+                  <td>
+                    <button class="btn btn-sm btn-warning me-2" (click)="editPastor(pastor)">{{Dictionary.ADMIN_EDIT}}</button>
+                    <button class="btn btn-sm btn-danger" (click)="deletePastor(pastor.id)">{{Dictionary.ADMIN_DELETE}}</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Events Tab -->
+      <div *ngIf="activeTab === 'events'">
+        <h2>{{Dictionary.ADMIN_MANAGE_EVENTS}}</h2>
+        
+        <div class="card mb-4">
+          <div class="card-header">
+            <h5>{{editingEvent ? Dictionary.ADMIN_EDIT_EVENT : Dictionary.ADMIN_ADD_EVENT}}</h5>
+          </div>
+          <div class="card-body">
+            <form (ngSubmit)="saveEvent()">
+              <div class="row">
+                <div class="col-md-12 mb-3">
+                  <label class="form-label">{{Dictionary.ADMIN_EVENT_TITLE}}</label>
+                  <input type="text" class="form-control" [(ngModel)]="eventForm.title" name="title" required>
+                </div>
+                <div class="col-md-12 mb-3">
+                  <label class="form-label">{{Dictionary.ADMIN_DESCRIPTION}}</label>
+                  <textarea class="form-control" [(ngModel)]="eventForm.description" name="description" rows="3"></textarea>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">{{Dictionary.ADMIN_EVENT_DATE}}</label>
+                  <input type="datetime-local" class="form-control" [(ngModel)]="eventForm.eventDate" name="eventDate" required>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">{{Dictionary.ADMIN_END_DATE}}</label>
+                  <input type="datetime-local" class="form-control" [(ngModel)]="eventForm.endDate" name="endDate">
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">{{Dictionary.ADMIN_LOCATION}}</label>
+                  <input type="text" class="form-control" [(ngModel)]="eventForm.location" name="location">
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">{{Dictionary.ADMIN_BRANCH_OPTIONAL}}</label>
+                  <select class="form-select" [(ngModel)]="eventForm.branchId" name="branchId">
+                    <option [value]="null">{{Dictionary.ADMIN_ALL_BRANCHES}}</option>
+                    <option *ngFor="let branch of branches" [value]="branch.id">{{branch.name}}</option>
+                  </select>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">{{Dictionary.ADMIN_EVENT_TYPE}}</label>
+                  <select class="form-select" [(ngModel)]="eventForm.type" name="type">
+                    <option *ngFor="let type of eventTypes; let i = index" [value]="i">{{type}}</option>
+                  </select>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">{{Dictionary.ADMIN_STATUS}}</label>
+                  <select class="form-select" [(ngModel)]="eventForm.status" name="status">
+                    <option *ngFor="let status of eventStatuses; let i = index" [value]="i">{{status}}</option>
+                  </select>
+                </div>
+                <div class="col-md-12 mb-3">
+                  <label class="form-label">{{Dictionary.ADMIN_IMAGE_URL}}</label>
+                  <input type="text" class="form-control" [(ngModel)]="eventForm.imageUrl" name="imageUrl">
+                </div>
+              </div>
+              <button type="submit" class="btn btn-primary">
+                {{editingEvent ? Dictionary.ADMIN_UPDATE : Dictionary.ADMIN_CREATE}}
+              </button>
+              <button type="button" class="btn btn-secondary ms-2" *ngIf="editingEvent" (click)="cancelEventEdit()">
+                {{Dictionary.ADMIN_CANCEL}}
+              </button>
+            </form>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <h5>{{Dictionary.ADMIN_EXISTING_EVENTS}}</h5>
+          </div>
+          <div class="card-body">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>{{Dictionary.ADMIN_TITLE}}</th>
+                  <th>{{Dictionary.ADMIN_DATE}}</th>
+                  <th>{{Dictionary.ADMIN_LOCATION}}</th>
+                  <th>{{Dictionary.ADMIN_STATUS}}</th>
+                  <th>{{Dictionary.ADMIN_ACTIONS}}</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let event of events">
+                  <td>{{event.title}}</td>
+                  <td>{{event.eventDate | date:'short'}}</td>
+                  <td>{{event.location}}</td>
+                  <td>
+                    <span class="badge" [class.bg-success]="event.status === 0" [class.bg-secondary]="event.status === 1">
+                      {{eventStatuses[event.status]}}
+                    </span>
+                  </td>
+                  <td>
+                    <button class="btn btn-sm btn-warning me-2" (click)="editEvent(event)">{{Dictionary.ADMIN_EDIT}}</button>
+                    <button class="btn btn-sm btn-danger" (click)="deleteEvent(event.id)">{{Dictionary.ADMIN_DELETE}}</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Church Info Tab -->
+      <div *ngIf="activeTab === 'churchinfo'" class="church-info-tab">
+        <h2>{{Dictionary.ADMIN_MANAGE_CHURCH_INFO}}</h2>
+        
+        <div class="card" *ngIf="churchInfo">
+          <div class="card-body">
+            <form (ngSubmit)="saveChurchInfo()">
+              <div class="mb-3">
+                <label class="form-label">{{Dictionary.ADMIN_MISSION}}</label>
+                <textarea class="form-control" [(ngModel)]="churchInfo.mission" name="mission" rows="3" required></textarea>
+              </div>
+              <div class="mb-3">
+                <label class="form-label">{{Dictionary.ADMIN_VISION}}</label>
+                <textarea class="form-control" [(ngModel)]="churchInfo.vision" name="vision" rows="3" required></textarea>
+              </div>
+              <div class="mb-3">
+                <label class="form-label">{{Dictionary.ADMIN_BELIEFS}}</label>
+                <textarea class="form-control" [(ngModel)]="churchInfo.beliefs" name="beliefs" rows="5" required></textarea>
+              </div>
+              <div class="mb-3">
+                <label class="form-label">{{Dictionary.ADMIN_HISTORY}}</label>
+                <textarea class="form-control" [(ngModel)]="churchInfo.history" name="history" rows="4"></textarea>
+              </div>
+              <div class="row">
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">{{Dictionary.ADMIN_CONTACT_EMAIL}}</label>
+                  <input type="email" class="form-control" [(ngModel)]="churchInfo.contactEmail" name="contactEmail">
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">{{Dictionary.ADMIN_CONTACT_PHONE}}</label>
+                  <input type="text" class="form-control" [(ngModel)]="churchInfo.contactPhone" name="contactPhone">
+                </div>
+              </div>
+              <div class="mb-3">
+                <label class="form-label">{{Dictionary.ADMIN_HERO_VIDEO_URL}}</label>
+                <input type="text" class="form-control" [(ngModel)]="churchInfo.heroVideoUrl" name="heroVideoUrl" placeholder="https://example.com/church-service-video.mp4">
+                <small class="text-muted">Enter the URL of a video file (MP4 format recommended) to display as a full-width background on the home page</small>
+              </div>
+              <button type="submit" class="btn btn-primary">{{Dictionary.ADMIN_UPDATE_CHURCH_INFO}}</button>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <!-- Highlights Tab -->
+      <div *ngIf="activeTab === 'highlights'">
+        <h2>{{Dictionary.ADMIN_MANAGE_HIGHLIGHTS}}</h2>
+        
+        <div class="card mb-4">
+          <div class="card-header">
+            <h5>{{editingHighlight ? Dictionary.ADMIN_EDIT_HIGHLIGHT : Dictionary.ADMIN_ADD_HIGHLIGHT}}</h5>
+          </div>
+          <div class="card-body">
+            <form (ngSubmit)="saveHighlight()">
+              <div class="row">
+                <div class="col-md-12 mb-3">
+                  <label class="form-label">{{Dictionary.ADMIN_HIGHLIGHT_TITLE}}</label>
+                  <input type="text" class="form-control" [(ngModel)]="highlightForm.title" name="title" required>
+                </div>
+                <div class="col-md-12 mb-3">
+                  <label class="form-label">{{Dictionary.ADMIN_HIGHLIGHT_DESCRIPTION}}</label>
+                  <textarea class="form-control" [(ngModel)]="highlightForm.description" name="description" rows="2"></textarea>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">{{Dictionary.ADMIN_HIGHLIGHT_TYPE}}</label>
+                  <select class="form-select" [(ngModel)]="highlightForm.type" name="type" required>
+                    <option *ngFor="let type of highlightTypes; let i = index" [value]="i">{{type}}</option>
+                  </select>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">{{Dictionary.ADMIN_ORDER_INDEX}}</label>
+                  <input type="number" class="form-control" [(ngModel)]="highlightForm.orderIndex" name="orderIndex" min="1" required>
+                </div>
+                <div class="col-md-12 mb-3">
+                  <label class="form-label">{{Dictionary.ADMIN_MEDIA_URL}}</label>
+                  <input type="text" class="form-control" [(ngModel)]="highlightForm.mediaUrl" name="mediaUrl" 
+                         placeholder="For images: image URL | For videos: YouTube embed URL" required>
+                  <small class="text-muted">For images, provide direct image URL. For YouTube videos, use embed format: https://www.youtube.com/embed/VIDEO_ID</small>
+                </div>
+                <div class="col-md-12 mb-3" *ngIf="highlightForm.type === HighlightType.Video">
+                  <label class="form-label">{{Dictionary.ADMIN_THUMBNAIL_URL}}</label>
+                  <input type="text" class="form-control" [(ngModel)]="highlightForm.thumbnailUrl" name="thumbnailUrl" placeholder="Optional thumbnail image URL">
+                </div>
+                <div class="col-md-12 mb-3">
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" [(ngModel)]="highlightForm.isActive" name="isActive" id="isActive">
+                    <label class="form-check-label" for="isActive">
+                      {{Dictionary.ADMIN_IS_ACTIVE}}
+                    </label>
+                  </div>
+                </div>
+              </div>
+              <button type="submit" class="btn btn-primary">
+                {{editingHighlight ? Dictionary.ADMIN_UPDATE : Dictionary.ADMIN_CREATE}}
+              </button>
+              <button type="button" class="btn btn-secondary ms-2" *ngIf="editingHighlight" (click)="cancelHighlightEdit()">
+                {{Dictionary.ADMIN_CANCEL}}
+              </button>
+            </form>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <h5>{{Dictionary.ADMIN_EXISTING_HIGHLIGHTS}}</h5>
+          </div>
+          <div class="card-body">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>{{Dictionary.ADMIN_TITLE}}</th>
+                  <th>{{Dictionary.ADMIN_TYPE}}</th>
+                  <th>{{Dictionary.ADMIN_MEDIA}}</th>
+                  <th>{{Dictionary.ADMIN_ORDER}}</th>
+                  <th>{{Dictionary.ADMIN_STATUS}}</th>
+                  <th>{{Dictionary.ADMIN_ACTIONS}}</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let highlight of highlights">
+                  <td>{{highlight.title}}</td>
+                  <td>{{highlightTypes[highlight.type]}}</td>
+                  <td>
+                    <img *ngIf="highlight.type === HighlightType.Image" [src]="highlight.mediaUrl" alt="Preview" style="width: 80px; height: 60px; object-fit: cover;">
+                    <i *ngIf="highlight.type === HighlightType.Video" class="fas fa-video fs-3 text-primary"></i>
+                  </td>
+                  <td>{{highlight.orderIndex}}</td>
+                  <td>
+                    <span class="badge" [class.bg-success]="highlight.isActive" [class.bg-secondary]="!highlight.isActive">
+                      {{highlight.isActive ? 'Active' : 'Inactive'}}
+                    </span>
+                  </td>
+                  <td>
+                    <button class="btn btn-sm btn-warning me-2" (click)="editHighlight(highlight)">{{Dictionary.ADMIN_EDIT}}</button>
+                    <button class="btn btn-sm btn-danger" (click)="deleteHighlight(highlight.id)">{{Dictionary.ADMIN_DELETE}}</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

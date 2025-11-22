@@ -1,0 +1,30 @@
+<div class="container">
+  <div class="row justify-content-center mt-5">
+    <div class="col-md-4">
+      <div class="card shadow">
+        <div class="card-body p-5">
+          <h2 class="text-center mb-4">{{Dictionary.ADMIN_LOGIN_TITLE}}</h2>
+          <form (ngSubmit)="onSubmit()">
+            <div class="mb-3">
+              <label for="username" class="form-label">{{Dictionary.ADMIN_USERNAME}}</label>
+              <input type="text" class="form-control" id="username" 
+                     [(ngModel)]="credentials.username" name="username" required>
+            </div>
+            <div class="mb-3">
+              <label for="password" class="form-label">{{Dictionary.ADMIN_PASSWORD}}</label>
+              <input type="password" class="form-control" id="password" 
+                     [(ngModel)]="credentials.password" name="password" required>
+            </div>
+            <div class="alert alert-danger" *ngIf="errorMessage">
+              {{errorMessage}}
+            </div>
+            <button type="submit" class="btn btn-primary w-100" [disabled]="loading">
+              <span *ngIf="loading" class="spinner-border spinner-border-sm me-2"></span>
+              {{Dictionary.ADMIN_LOGIN_BUTTON}}
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

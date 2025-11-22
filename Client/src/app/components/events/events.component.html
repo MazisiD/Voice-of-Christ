@@ -1,0 +1,65 @@
+<div class="container my-5">
+  <h1 class="text-center mb-5">{{Dictionary.EVENTS_TITLE}}</h1>
+
+  <div class="row mb-4">
+    <div class="col-md-6">
+      <select class="form-select" [(ngModel)]="selectedYear" (change)="filterEvents()">
+        <option [value]="currentYear">{{currentYear}}</option>
+        <option [value]="currentYear - 1">{{currentYear - 1}}</option>
+        <option [value]="currentYear + 1">{{currentYear + 1}}</option>
+      </select>
+    </div>
+    <div class="col-md-6">
+      <div class="btn-group w-100" role="group">
+        <button type="button" class="btn" [class.btn-primary]="filter === 'all'" 
+                [class.btn-outline-primary]="filter !== 'all'" (click)="setFilter('all')">
+          {{Dictionary.EVENTS_ALL}}
+        </button>
+        <button type="button" class="btn" [class.btn-primary]="filter === 'upcoming'" 
+                [class.btn-outline-primary]="filter !== 'upcoming'" (click)="setFilter('upcoming')">
+          {{Dictionary.EVENTS_UPCOMING}}
+        </button>
+        <button type="button" class="btn" [class.btn-primary]="filter === 'past'" 
+                [class.btn-outline-primary]="filter !== 'past'" (click)="setFilter('past')">
+          {{Dictionary.EVENTS_PAST}}
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-6 mb-4 d-flex" *ngFor="let event of filteredEvents">
+      <div class="card event-card h-100 w-100" [class.border-success]="event.status === 0" [class.border-secondary]="event.status === 1">
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-start mb-2">
+            <h5 class="card-title">{{event.title}}</h5>
+            <span class="badge" [class.bg-success]="event.status === 0" [class.bg-secondary]="event.status === 1">
+              {{getStatusLabel(event.status)}}
+            </span>
+          </div>
+          <p class="card-text">
+            <i class="fas fa-calendar"></i> {{event.eventDate | date:'medium'}}
+            <span *ngIf="event.endDate"> - {{event.endDate | date:'medium'}}</span>
+          </p>
+          <p class="card-text" *ngIf="event.description">{{event.description}}</p>
+          <p class="card-text" *ngIf="event.location">
+            <i class="fas fa-map-marker-alt"></i> {{event.location}}
+          </p>
+          <p class="card-text" *ngIf="event.branch">
+            <small class="text-muted">{{Dictionary.EVENTS_BRANCH}} {{event.branch.name}}</small>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="text-center" *ngIf="filteredEvents.length === 0 && !loading">
+    <p class="text-muted">{{Dictionary.EVENTS_NO_EVENTS}}</p>
+  </div>
+
+  <div class="text-center" *ngIf="loading">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">{{Dictionary.LOADING}}</span>
+    </div>
+  </div>
+</div>

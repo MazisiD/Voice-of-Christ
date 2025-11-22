@@ -1,0 +1,39 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
+  <div class="container">
+    <a class="navbar-brand d-flex align-items-center" routerLink="/">
+      <img src="assets/images/logo.png" [alt]="Dictionary.NAV_LOGO_ALT" class="navbar-logo me-2">
+      <strong>{{Dictionary.NAV_CHURCH_NAME}}</strong>
+    </a>
+    <button class="navbar-toggler" type="button" (click)="toggleNavbar()" [attr.aria-expanded]="isNavbarCollapsed">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" [class.show]="!isNavbarCollapsed" id="navbarNav">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" (click)="closeNavbar()">{{Dictionary.NAV_HOME}}</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/branches" routerLinkActive="active" (click)="closeNavbar()">{{Dictionary.NAV_BRANCHES}}</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/events" routerLinkActive="active" (click)="closeNavbar()">{{Dictionary.NAV_EVENTS}}</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/testimonies" routerLinkActive="active" (click)="closeNavbar()">{{Dictionary.NAV_TESTIMONIES}}</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/about" routerLinkActive="active" (click)="closeNavbar()">{{Dictionary.NAV_ABOUT}}</a>
+        </li>
+        <li class="nav-item" *ngIf="isAuthenticated">
+          <a class="nav-link" routerLink="/admin/dashboard" routerLinkActive="active" (click)="closeNavbar()">{{Dictionary.NAV_ADMIN}}</a>
+        </li>
+        <li class="nav-item" *ngIf="!isAuthenticated">
+          <a class="nav-link" routerLink="/admin/login" (click)="closeNavbar()">{{Dictionary.NAV_ADMIN}}</a>
+        </li>
+        <li class="nav-item" *ngIf="isAuthenticated">
+          <button class="btn btn-outline-light btn-sm ms-2" (click)="logout()">{{Dictionary.NAV_LOGOUT}}</button>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>

@@ -1,0 +1,107 @@
+<!-- Hero Section -->
+<div class="testimonies-hero">
+  <div class="hero-overlay">
+    <div class="container">
+      <div class="hero-content text-center text-white">
+        <h1 class="display-3 fw-bold mb-3 animate-fade-in">{{Dictionary.TESTIMONIES_TITLE}}</h1>
+        <p class="lead animate-fade-in-delay">{{Dictionary.TESTIMONIES_SUBTITLE}}</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Success Message -->
+<div class="container mt-4" *ngIf="showSuccessMessage">
+  <div class="alert alert-success alert-dismissible fade show" role="alert">
+    <i class="fas fa-check-circle me-2"></i>
+    {{Dictionary.TESTIMONIES_SUCCESS_MESSAGE}}
+  </div>
+</div>
+
+<!-- Share Your Testimony Section -->
+<div class="container my-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <div class="share-testimony-card">
+        <div class="card-header text-center">
+          <i class="fas fa-pen-fancy fa-3x text-primary mb-3"></i>
+          <h2 class="fw-bold">{{Dictionary.TESTIMONIES_SHARE_TITLE}}</h2>
+          <p class="text-muted">{{Dictionary.TESTIMONIES_SHARE_SUBTITLE}}</p>
+        </div>
+        <div class="card-body">
+          <form (ngSubmit)="submitTestimony()">
+            <div class="mb-4">
+              <div class="form-check mb-3">
+                <input class="form-check-input" type="checkbox" [(ngModel)]="newTestimony.isAnonymous" name="isAnonymous" id="anonymousCheck">
+                <label class="form-check-label" for="anonymousCheck">
+                  {{Dictionary.TESTIMONIES_ANONYMOUS}}
+                </label>
+              </div>
+            </div>
+
+            <div class="mb-4" *ngIf="!newTestimony.isAnonymous">
+              <label for="name" class="form-label">{{Dictionary.TESTIMONIES_NAME}} <span class="text-muted">({{Dictionary.TESTIMONIES_OPTIONAL}})</span></label>
+              <input type="text" class="form-control form-control-lg" id="name" [(ngModel)]="newTestimony.name" name="name" [placeholder]="Dictionary.TESTIMONIES_NAME_PLACEHOLDER">
+            </div>
+
+            <div class="mb-4">
+              <label for="testimony" class="form-label">{{Dictionary.TESTIMONIES_YOUR_TESTIMONY}} <span class="text-danger">*</span></label>
+              <textarea class="form-control" id="testimony" [(ngModel)]="newTestimony.testimony" name="testimony" rows="6" [placeholder]="Dictionary.TESTIMONIES_TESTIMONY_PLACEHOLDER" required></textarea>
+              <small class="text-muted">{{Dictionary.TESTIMONIES_MIN_LENGTH}}</small>
+            </div>
+
+            <div class="text-center">
+              <button type="submit" class="btn btn-primary btn-lg px-5" [disabled]="isSubmitting || !newTestimony.testimony.trim()">
+                <span *ngIf="!isSubmitting">
+                  <i class="fas fa-paper-plane me-2"></i>{{Dictionary.TESTIMONIES_SUBMIT}}
+                </span>
+                <span *ngIf="isSubmitting">
+                  <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                  {{Dictionary.TESTIMONIES_SUBMITTING}}
+                </span>
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Testimonies List -->
+<div class="testimonies-list-section py-5" id="testimonies-list">
+  <div class="container">
+    <div class="text-center mb-5">
+      <h2 class="display-5 fw-bold">{{Dictionary.TESTIMONIES_FROM_COMMUNITY}}</h2>
+      <p class="lead text-muted">{{Dictionary.TESTIMONIES_STORIES_SUBTITLE}}</p>
+    </div>
+
+    <div class="row g-4" *ngIf="testimonies.length > 0">
+      <div class="col-lg-6" *ngFor="let testimony of testimonies">
+        <div class="testimony-card">
+          <div class="testimony-header">
+            <div class="testimony-avatar">
+              {{getInitials(testimony)}}
+            </div>
+            <div class="testimony-author">
+              <h5 class="mb-0">{{getDisplayName(testimony)}}</h5>
+              <small class="text-muted">{{testimony.createdAt | date:'MMMM d, yyyy'}}</small>
+            </div>
+            <div class="ms-auto">
+              <i class="fas fa-quote-right fa-2x text-primary opacity-25"></i>
+            </div>
+          </div>
+          <div class="testimony-body">
+            <p class="testimony-text">{{testimony.testimony}}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="text-center py-5" *ngIf="testimonies.length === 0">
+      <i class="fas fa-comments fa-4x text-muted mb-3"></i>
+      <p class="lead text-muted">{{Dictionary.TESTIMONIES_NO_TESTIMONIES}}</p>
+      <p class="text-muted">{{Dictionary.TESTIMONIES_BE_FIRST}}</p>
+    </div>
+  </div>
+</div>

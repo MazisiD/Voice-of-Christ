@@ -1,0 +1,23 @@
+.admin-sidebar {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+}
+
+.church-info-tab textarea {
+  min-height: 100px;
+}
+
+.table {
+  overflow-x: auto;
+}
+
+.card {
+  margin-bottom: 20px;
+}
+
+.btn-sm {
+  padding: 0.25rem 0.5rem;
+  font-size: 0.875rem;
+}

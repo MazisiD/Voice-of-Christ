@@ -1,0 +1,139 @@
+<div class="hero-section">
+  <div class="container">
+    <h1 class="display-4 fw-bold">{{Dictionary.HOME_WELCOME_TITLE}}</h1>
+    <p class="lead">{{Dictionary.HOME_WELCOME_SUBTITLE}}</p>
+    <div class="mt-4">
+      <a routerLink="/about" class="btn btn-light btn-lg me-2">{{Dictionary.HOME_LEARN_MORE}}</a>
+      <a routerLink="/events" class="btn btn-outline-light btn-lg">{{Dictionary.HOME_UPCOMING_EVENTS}}</a>
+    </div>
+  </div>
+</div>
+
+<!-- Church Service Video Highlight Section -->
+<div class="video-highlight-section" *ngIf="churchInfo && churchInfo.heroVideoUrl">
+  <div class="video-overlay"></div>
+  <video class="hero-video" autoplay muted loop playsinline>
+    <source [src]="churchInfo.heroVideoUrl" type="video/mp4">
+    {{Dictionary.HOME_VIDEO_NOT_SUPPORTED}}
+  </video>
+  <div class="video-content">
+    <div class="container text-center">
+      <h2 class="display-4 fw-bold text-white mb-4">{{Dictionary.HOME_VIDEO_TITLE}}</h2>
+      <p class="lead text-white mb-4">{{Dictionary.HOME_VIDEO_SUBTITLE}}</p>
+      <a routerLink="/events" class="btn btn-light btn-lg">
+        <i class="fas fa-calendar-alt me-2"></i>{{Dictionary.HOME_VIDEO_CTA}}
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- Media Highlights Section -->
+<div class="container my-5" *ngIf="highlights.length > 0">
+  <h2 class="text-center mb-5">{{Dictionary.HOME_CHURCH_HIGHLIGHTS}}</h2>
+  <div class="row">
+    <div class="col-md-4 mb-4" *ngFor="let highlight of highlights">
+      <div class="card h-100 border-0 shadow-sm">
+        <div class="highlight-media" *ngIf="highlight.type === HighlightType.Image">
+          <img [src]="highlight.mediaUrl" [alt]="highlight.title" class="card-img-top">
+        </div>
+        <div class="highlight-media ratio ratio-16x9" *ngIf="highlight.type === HighlightType.Video">
+          <iframe [src]="getSafeUrl(highlight.mediaUrl)" [title]="highlight.title" allowfullscreen></iframe>
+        </div>
+        <div class="card-body">
+          <h5 class="card-title">{{highlight.title}}</h5>
+          <p class="card-text text-muted" *ngIf="highlight.description">{{highlight.description}}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- What We Offer Section with Background -->
+<div class="section-with-background">
+  <div class="container py-5">
+    <h2 class="text-center mb-5 text-white">{{Dictionary.HOME_HIGHLIGHTS_TITLE}}</h2>
+    <div class="row mb-5">
+      <div class="col-md-6 col-lg-3 mb-4">
+        <div class="card h-100 text-center p-4 border-0 shadow-sm">
+          <i class="fas fa-music fs-1 text-primary mb-3"></i>
+          <h4>{{Dictionary.HOME_WORSHIP_TITLE}}</h4>
+          <p class="text-muted">{{Dictionary.HOME_WORSHIP_TEXT}}</p>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-3 mb-4">
+        <div class="card h-100 text-center p-4 border-0 shadow-sm">
+          <i class="fas fa-child fs-1 text-primary mb-3"></i>
+          <h4>{{Dictionary.HOME_YOUTH_TITLE}}</h4>
+          <p class="text-muted">{{Dictionary.HOME_YOUTH_TEXT}}</p>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-3 mb-4">
+        <div class="card h-100 text-center p-4 border-0 shadow-sm">
+          <i class="fas fa-hands-helping fs-1 text-primary mb-3"></i>
+          <h4>{{Dictionary.HOME_OUTREACH_TITLE}}</h4>
+          <p class="text-muted">{{Dictionary.HOME_OUTREACH_TEXT}}</p>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-3 mb-4">
+        <div class="card h-100 text-center p-4 border-0 shadow-sm">
+          <i class="fas fa-praying-hands fs-1 text-primary mb-3"></i>
+          <h4>{{Dictionary.HOME_PRAYER_TITLE}}</h4>
+          <p class="text-muted">{{Dictionary.HOME_PRAYER_TEXT}}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Core Values Section -->
+  <div class="container py-5">
+    <div class="row text-center mb-5">
+      <div class="col-md-4 mb-4">
+        <div class="card p-4">
+          <i class="fas fa-church fs-1 text-primary"></i>
+          <h3 class="mt-3">{{Dictionary.HOME_MISSION_TITLE}}</h3>
+          <p>{{Dictionary.HOME_MISSION_TEXT}}</p>
+        </div>
+      </div>
+      <div class="col-md-4 mb-4">
+        <div class="card p-4">
+          <i class="fas fa-users fs-1 text-primary"></i>
+          <h3 class="mt-3">{{Dictionary.HOME_COMMUNITY_TITLE}}</h3>
+          <p>{{Dictionary.HOME_COMMUNITY_TEXT}}</p>
+        </div>
+      </div>
+      <div class="col-md-4 mb-4">
+        <div class="card p-4">
+          <i class="fas fa-heart fs-1 text-primary"></i>
+          <h3 class="mt-3">{{Dictionary.HOME_IMPACT_TITLE}}</h3>
+          <p>{{Dictionary.HOME_IMPACT_TEXT}}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Upcoming Events Section -->
+<div class="container my-5">
+  <h2 class="text-center mb-4">{{Dictionary.HOME_UPCOMING_EVENTS}}</h2>
+  <div class="row">
+    <div class="col-md-4 mb-4" *ngFor="let event of upcomingEvents">
+      <div class="card event-card">
+        <div class="card-body">
+          <h5 class="card-title">{{event.title}}</h5>
+          <p class="card-text">
+            <small class="text-muted">
+              <i class="fas fa-calendar"></i> {{event.eventDate | date:'medium'}}
+            </small>
+          </p>
+          <p class="card-text">{{event.description}}</p>
+          <p class="card-text" *ngIf="event.location">
+            <small><i class="fas fa-map-marker-alt"></i> {{event.location}}</small>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="text-center mt-4">
+    <a routerLink="/events" class="btn btn-primary">{{Dictionary.HOME_VIEW_ALL_EVENTS}}</a>
+  </div>
+</div>

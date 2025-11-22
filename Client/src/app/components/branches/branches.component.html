@@ -1,0 +1,214 @@
+<!-- Hero Section -->
+<div class="branches-hero">
+  <div class="hero-overlay">
+    <div class="container">
+      <div class="hero-content text-center text-white">
+        <i class="fas fa-church fa-4x mb-4 animate-fade-in"></i>
+        <h1 class="display-3 fw-bold mb-3 animate-fade-in">{{Dictionary.BRANCHES_TITLE}}</h1>
+        <p class="lead animate-fade-in-delay">Worship with us at any of our vibrant locations</p>
+        <div class="hero-stats mt-4 animate-fade-in-delay-2">
+          <div class="row g-3 justify-content-center">
+            <div class="col-auto">
+              <div class="stat-badge">
+                <i class="fas fa-church me-2"></i>
+                <strong>{{branches.length}}</strong> Locations
+              </div>
+            </div>
+            <div class="col-auto">
+              <div class="stat-badge">
+                <i class="fas fa-users me-2"></i>
+                <strong>Growing</strong> Community
+              </div>
+            </div>
+            <div class="col-auto">
+              <div class="stat-badge">
+                <i class="fas fa-heart me-2"></i>
+                <strong>One</strong> Family
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Quick Info Section -->
+<div class="quick-info-section py-4">
+  <div class="container">
+    <div class="row g-3 text-center">
+      <div class="col-md-3 col-sm-6">
+        <div class="info-box">
+          <i class="fas fa-clock fa-2x text-primary mb-2"></i>
+          <h6 class="fw-bold">Sunday Service</h6>
+          <p class="mb-0 small">9:00 AM - 12:00 PM</p>
+        </div>
+      </div>
+      <div class="col-md-3 col-sm-6">
+        <div class="info-box">
+          <i class="fas fa-pray fa-2x text-primary mb-2"></i>
+          <h6 class="fw-bold">Midweek Prayer</h6>
+          <p class="mb-0 small">Wednesday 6:00 PM</p>
+        </div>
+      </div>
+      <div class="col-md-3 col-sm-6">
+        <div class="info-box">
+          <i class="fas fa-child fa-2x text-primary mb-2"></i>
+          <h6 class="fw-bold">Kids Ministry</h6>
+          <p class="mb-0 small">Sunday 9:00 AM</p>
+        </div>
+      </div>
+      <div class="col-md-3 col-sm-6">
+        <div class="info-box">
+          <i class="fas fa-music fa-2x text-primary mb-2"></i>
+          <h6 class="fw-bold">Youth Service</h6>
+          <p class="mb-0 small">Friday 5:00 PM</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Branches Grid Section -->
+<div class="branches-section py-5">
+  <div class="container">
+    <div class="section-header text-center mb-5">
+      <h2 class="display-6 fw-bold">Find Your Nearest Branch</h2>
+      <p class="text-muted">Each location offers a warm welcome and vibrant worship experience</p>
+    </div>
+
+    <div class="row g-4" *ngIf="branches.length > 0">
+      <div class="col-lg-3 col-md-4 col-sm-6" *ngFor="let branch of branches; let i = index">
+        <div class="branch-card h-100">
+          <div class="branch-card-header">
+            <div class="branch-number">{{i + 1}}</div>
+            <div class="branch-icon-small">
+              <i class="fas fa-map-marker-alt"></i>
+            </div>
+          </div>
+          <div class="branch-card-body">
+            <h5 class="branch-name">{{branch.name}}</h5>
+            
+            <div class="branch-details">
+              <div class="detail-line">
+                <i class="fas fa-location-dot"></i>
+                <span>{{branch.city}}<span *ngIf="branch.province">, {{branch.province}}</span></span>
+              </div>
+              
+              <div class="detail-line" *ngIf="branch.phoneNumber">
+                <i class="fas fa-phone"></i>
+                <a [href]="'tel:' + branch.phoneNumber">{{branch.phoneNumber}}</a>
+              </div>
+              
+              <div class="detail-line established">
+                <i class="fas fa-calendar-check"></i>
+                <span>Est. {{branch.establishedDate | date:'yyyy'}}</span>
+              </div>
+            </div>
+            
+            <div class="branch-leaders" *ngIf="branch.pastors && branch.pastors.length > 0">
+              <div class="leaders-header">
+                <i class="fas fa-user-tie me-1"></i>
+                <small>Leadership</small>
+              </div>
+              <div class="leader-tags">
+                <span class="leader-tag" *ngFor="let pastor of branch.pastors">
+                  {{pastor.firstName}} {{pastor.lastName[0]}}.
+                </span>
+              </div>
+            </div>
+
+            <div class="branch-actions mt-3">
+              <button class="btn btn-sm btn-outline-primary w-100" *ngIf="branch.email">
+                <i class="fas fa-envelope me-1"></i> Get Directions
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="text-center py-5" *ngIf="branches.length === 0">
+      <div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;">
+        <span class="visually-hidden">{{Dictionary.LOADING}}</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Features Section -->
+<div class="features-section py-5">
+  <div class="container">
+    <div class="section-header text-center mb-5">
+      <h2 class="display-6 fw-bold">What to Expect</h2>
+      <p class="text-muted">Experience at all our branches</p>
+    </div>
+    <div class="row g-4">
+      <div class="col-md-4">
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-hands-praying"></i>
+          </div>
+          <h5>Inspiring Worship</h5>
+          <p>Join us for powerful worship services with contemporary music and spirit-filled praise</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-book-bible"></i>
+          </div>
+          <h5>Biblical Teaching</h5>
+          <p>Experience life-transforming messages rooted in God's Word and practical application</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-people-group"></i>
+          </div>
+          <h5>Warm Community</h5>
+          <p>Connect with a loving family of believers who support and encourage one another</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Map Placeholder Section -->
+<div class="map-section py-5">
+  <div class="container">
+    <div class="map-placeholder">
+      <div class="map-overlay">
+        <div class="text-center text-white">
+          <i class="fas fa-map-marked-alt fa-4x mb-3"></i>
+          <h3 class="mb-3">View All Locations on Map</h3>
+          <p class="mb-4">Find the branch closest to you with our interactive map</p>
+          <button class="btn btn-light btn-lg">
+            <i class="fas fa-map me-2"></i>Open Map View
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CTA Section -->
+<div class="branches-cta-section py-5">
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-md-8">
+        <h2 class="mb-3">Can't Find a Branch Near You?</h2>
+        <p class="lead mb-md-0">We're always expanding! Contact us to learn about upcoming locations or join our online services.</p>
+      </div>
+      <div class="col-md-4 text-md-end">
+        <a routerLink="/about" class="btn btn-primary btn-lg me-2 mb-2">
+          <i class="fas fa-info-circle me-2"></i>Learn More
+        </a>
+        <a routerLink="/events" class="btn btn-outline-primary btn-lg mb-2">
+          <i class="fas fa-calendar me-2"></i>See Events
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
